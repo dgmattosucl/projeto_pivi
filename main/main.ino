@@ -1,5 +1,5 @@
 #include "RFID.h"
-#include "LCD.h"
+#include "Tela.h"
 #include "COMUNICACAO.h"
 #include "DISTANCIA.h"
 #include "MLX90.h"
@@ -20,7 +20,7 @@ unsigned long tempoEmExecucao;
 
 //Hardware
 RFID sensorRfid;
-LCD displayLcd;
+Tela displayLcd;
 DISTANCIA sensorDistancia;
 COMUNICACAO comunicacao;
 MLX90 sensorMLX90;
@@ -32,6 +32,10 @@ void setup()
 {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);  
+
+
+  //LCD
+  lcd.begin (16,12);
 }
 
 //LOOP 
@@ -42,6 +46,8 @@ void loop()
   
   //Exibe mensagem de aguardando RIF
   displayLcd.AguardandoRFID();
+  displayLcd.clearLCDLine(1);
+  
   
   //Verifica se o sensor RFID leu algum dado
   if (sensorRfid.LeuDado())
@@ -76,7 +82,10 @@ void loop()
 
           //Disparando Sirene
           sirene.DispararSirene();          
-        }               
+        } 
+
+         //Exibi temperatura lida
+         displayLcd.ExibeTemp(sensorDHT11.TemperaturaAmbiente());             
       }
 
       //Enviando dados de leitura do usuário
