@@ -9,14 +9,14 @@
 
 //APRESENTAÇÃO
 #include <HCSR04.h>
-int triggerPin = 6;
+int triggerPin = 8;
 int echoPin = 7;
 UltraSonicDistanceSensor distanceSensor(triggerPin, echoPin);
 double distance = 0;
 //FIM APRESENTAÇÃO
 
 //Variaveis de controle de tempo de envio de informações metereológicas
-long intervaloEnvioDadosMet = 30000;
+long intervaloEnvioDadosMet = 10000;
 long ultimoEnvioDadosMet = 0;
 
 //Variaveis de controle de tempo de leitura de temperatura de usuário
@@ -63,13 +63,13 @@ void loop()
     while(aindaTentarLerTempUsuario() && !temperaturaFoiLida){
       //Tempo que o app está em execução  
       tempoEmExecucao = millis();
-      Serial.println(tempoEmExecucao);
 
       //ExibindoMsgNoDisplay
       displayLcd.AproximeSe();
 //      delay(2000);
       
       //Se o usuário está na distância válida
+      distance = distanceSensor.measureDistanceCm();
       if (sensorDistancia.EstaNaDistanciaValida(distance)){
         //Avisa à main que a temperaturaFoiLida;
         temperaturaFoiLida = true;
@@ -92,12 +92,14 @@ void loop()
 
       //Enviando dados de leitura do usuário
       comunicacao.EnviaDadosUsuario(sensorMLX90.TemperaturaAtual());
+      delay(2000);
+      temperaturaFoiLida = false;
       }     
     }
 
     //Variavel de controle para TESTES (SIMULA O LEITOR RFID SENDO LIDO ASSIM QUE O ARDUÍNO É INICIADO)
-    sensorRfid.leuDado = false;
-    temperaturaFoiLida = false;
+//    sensorRfid.leuDado = false;
+//    temperaturaFoiLida = false;
   }else{
     if (deveEnviarDados()){
       //Enviando dados de leitura do sensor meteorologico
