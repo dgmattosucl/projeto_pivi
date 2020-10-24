@@ -1,27 +1,15 @@
-#include <HCSR04.h>
 class DISTANCIA
 {
 public:
-  bool distanciaValida;
-  DISTANCIA(){
-    triggerPin = 2;
-    echoPin = 3;
-    distanceSensor(triggerPin, echoPin);
-    distanciaValidaMax = 10.0;
-    distanciaValidaMin = 1.0;
-  }
+  DISTANCIA(){}
 
-  bool EstaNaDistanciaValida(){
-    if (distanceSensor.measureDistanceCm() > distanciaValidaMin && distanceSensor.measureDistanceCm() < distanciaValidaMax){
+  bool EstaNaDistanciaValida(double distance){
+    if (distance > 0 && distance <= 10){
       return true;
     }else{
       return false;
-    }    
+    }
   }
 private:
-  int triggerPin;
-  int echoPin;
-  double distanciaValidaMax;
-  double distanciaValidaMin;
-  UltraSonicDistanceSensor distanceSensor;
+  
 };
