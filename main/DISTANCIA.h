@@ -1,13 +1,14 @@
 class DISTANCIA
 {
 public:
-  bool distanciaValida;
-  DISTANCIA(){
-    distanciaValida = true;  
-  }
+  DISTANCIA(){}
 
-  bool EstaNaDistanciaValida(){
-    return distanciaValida;
+  bool EstaNaDistanciaValida(double distance){
+    if (distance > 0 && distance <= 10){
+      return true;
+    }else{
+      return false;
+    }
   }
 private:
   
