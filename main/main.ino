@@ -42,6 +42,10 @@ void setup()
 
   //LCD
   lcd.begin (16,12);
+
+
+  //RFID
+  RFID.begin(9600);
 }
 
 //LOOP 
@@ -55,8 +59,10 @@ void loop()
   displayLcd.clearLCDLine(1);
   
   //Verifica se o sensor RFID leu algum dado
-  if (sensorRfid.LeuDado())
+  if (RFID.available() > 0)
   {
+    String tag = RFID(); // Se o valor for 0 não houve leitura da tag
+    
     //Armazena momento em que o RFID leu algum dado
     ultimaLeituraTempUsuario = tempoEmExecucao;
 
